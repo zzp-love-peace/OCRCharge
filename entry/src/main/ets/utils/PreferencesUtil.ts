@@ -4,7 +4,7 @@ import Logger from './Logger';
 
 const OCR_STORE: string = 'OCRAppStore';
 
-export class PreferencesUtil {
+class PreferencesUtil {
   private myPreferences
 
   public initPreferences(context: common.UIAbilityContext) {

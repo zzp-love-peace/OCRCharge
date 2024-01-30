@@ -11,6 +11,22 @@
     {
       "name": "primary",
       "value": "#2A6B29"
+    },
+    {
+      "name": "gray",
+      "value": "#999"
+    },
+    {
+      "name": "grayBackground",
+      "value": "#F2F2F2"
+    },
+    {
+      "name": "secondary",
+      "value": "#D6E8CE"
+    },
+    {
+      "name": "white",
+      "value": "#FFFFFF"
     }
   ]
 }

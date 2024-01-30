@@ -4,7 +4,7 @@ import { HttpHelper } from '../network/HttpHelper'
 import StringUtil from '../utils/StringUtil'
 @Entry
 @Component
-struct Register {
+struct RegisterPage {
   @State username: string = ''
   @State password: string = ''
   @State againPassword: string = ''
@@ -58,7 +58,6 @@ struct Register {
         .fontSize(16)
         .padding({ left: 30, right: 30 })
         .onClick(() => {
-          // router.back()
           this.doRegister()
         })
     }

@@ -4,14 +4,17 @@ import { HttpHelper } from '../network/HttpHelper'
 import StringUtil from '../utils/StringUtil'
 import common from '@ohos.app.ability.common';
 import PreferencesUtil from '../utils/PreferencesUtil';
+import LabelUtil from '../utils/LabelUtil'
+import { Label } from '../model/ResponseModel'
 
 
 const USERNAME: string = 'username';
 const PASSWORD: string = 'password';
+export const USERID: string = 'userId';
 
 @Entry
 @Component
-struct Login {
+struct LoginPage {
   context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
 
   @State username: string = ''
@@ -66,7 +69,7 @@ struct Login {
           .decoration({ type: TextDecorationType.Underline })
           .onClick(() => {
             router.pushUrl({
-              url: 'pages/Register'
+              url: 'pages/RegisterPage'
             }, router.RouterMode.Single)
           })
         Button('登录')
@@ -95,16 +98,31 @@ struct Login {
           params: { username: this.username, password: this.password },
           onDataSuccess: (data: string, msg: string) => {
             HttpHelper.getInstance().setAuthToken(data)
+            this.getUserId()
             PreferencesUtil.put(USERNAME, this.username)
             PreferencesUtil.put(PASSWORD, this.password)
             promptAction.showToast({ message: msg })
-            router.replaceUrl({
-              url: 'pages/Index'
-            }, router.RouterMode.Single)
+            this.getAllLabels()
           }
         })
     } else {
       promptAction.showToast({ message: '用户名和密码不能为空' })
     }
+  }
+
+  private getAllLabels() {
+    HttpHelper.getInstance()
+      .get({ url: "/label/getAll", onDataSuccess: (data: Label[]) => {
+        LabelUtil.initLabelList(data)
+        router.replaceUrl({
+          url: 'pages/MainPage'
+        }, router.RouterMode.Single)
+      } })
+  }
+
+  private getUserId() {
+    HttpHelper.getInstance().get({url: "/user/getUserId", onDataSuccess: (data: number) => {
+      PreferencesUtil.put(USERID, data)
+    }})
   }
 }

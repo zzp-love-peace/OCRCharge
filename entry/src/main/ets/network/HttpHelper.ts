@@ -33,14 +33,11 @@ interface HttpHelperStruct<R> {
 export class HttpHelper {
   private static BASE_URL: string = 'http://192.168.0.100:9988/'
 
-  private static AUTH_TOKEN: string
-
   private static instance: HttpHelper = new HttpHelper()
 
   private constructor() {
     axios.defaults.baseURL = HttpHelper.BASE_URL
     axios.defaults.timeout = 5000
-    axios.defaults.headers.common['Authorization'] = HttpHelper.AUTH_TOKEN
   }
 
   public static getInstance(): HttpHelper {
@@ -48,7 +45,7 @@ export class HttpHelper {
   }
 
   public setAuthToken(token: string) {
-    HttpHelper.AUTH_TOKEN = token
+    axios.defaults.headers.common['Authorization'] = token
   }
 
   public get<R = any>(httpHelperStruct: HttpHelperStruct<R>) {
@@ -100,6 +97,28 @@ export class HttpHelper {
       httpHelperStruct.onPrepare()
     }
     axios.put<string, AxiosResponse<HttpResponse<R>>, null>(httpHelperStruct.url, httpHelperStruct.data, {
+      params: httpHelperStruct.params
+    }).then((res) => {
+      this.handleAxiosResponse<R>(res, httpHelperStruct.onRequestSuccess, httpHelperStruct.onDataSuccess, httpHelperStruct.onDataFail, httpHelperStruct.onFail)
+    }).catch((error: Error) => {
+      if (httpHelperStruct.onError) {
+        httpHelperStruct.onError(error)
+      } else {
+        promptAction.showToast({ message: '出现异常了' })
+        Logger.error(HttpHelper.BASE_URL + httpHelperStruct.url, `onError=>${error}`)
+      }
+    }).finally(() => {
+      if (httpHelperStruct.onFinish) {
+        httpHelperStruct.onFinish()
+      }
+    })
+  }
+
+  public delete<R = any>(httpHelperStruct: HttpHelperStruct<R>) {
+    if (httpHelperStruct.onPrepare) {
+      httpHelperStruct.onPrepare()
+    }
+    axios.delete<string, AxiosResponse<HttpResponse<R>>, null>(httpHelperStruct.url, {
       params: httpHelperStruct.params
     }).then((res) => {
       this.handleAxiosResponse<R>(res, httpHelperStruct.onRequestSuccess, httpHelperStruct.onDataSuccess, httpHelperStruct.onDataFail, httpHelperStruct.onFail)
