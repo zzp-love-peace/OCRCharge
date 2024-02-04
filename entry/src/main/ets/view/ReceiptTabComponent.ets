@@ -1,7 +1,4 @@
-import { Label } from '../model/ResponseModel';
-import { HttpHelper } from '../network/HttpHelper';
-import LabelUtil from '../utils/LabelUtil';
-import Logger from '../utils/Logger';
+import router from '@ohos.router';
 import ReceiptComponent, { ReceiptType } from './ReceiptComponent';
 import ToolBarComponent from './ToolBarComponent';
 
@@ -28,6 +25,7 @@ export default struct ReceiptTabComponent {
   build() {
     Column() {
       ToolBarComponent({ title: "账单", icons: [{ icon: $r("app.media.ic_search"), onClick: () => {
+        router.pushUrl({ url: "pages/SearchPage" })
       } },
         { icon: $r("app.media.ic_edit"), onClick: () => {
         } }] })

@@ -8,7 +8,7 @@ export interface ToolBarIcon {
 @Component
 export default struct ToolBarComponent {
   title: string
-  icons: ToolBarIcon[]
+  icons: ToolBarIcon[] = []
   backIcon: boolean = false
 
   build() {

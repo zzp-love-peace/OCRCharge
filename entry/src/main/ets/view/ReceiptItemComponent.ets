@@ -1,5 +1,8 @@
+import router from '@ohos.router'
 import { Bill } from '../model/ResponseModel'
+import BillUtil from '../utils/BillUtil'
 import LabelUtil from '../utils/LabelUtil'
+import { ReceiptType } from './ReceiptComponent'
 
 @Component
 export default struct ReceiptItemComponent {
@@ -8,7 +11,8 @@ export default struct ReceiptItemComponent {
 
   build() {
     Row() {
-      Image($r("app.media.ic_receipt_item"))
+      Image(BillUtil.isBillIncome(this.bill) ? $r("app.media.ic_income") :  $r("app.media.ic_expense"))
+        .fillColor($r("app.color.black"))
         .width(24)
         .height(24)
       Text(LabelUtil.getLabelNameFormId(this.bill.labelId))
@@ -16,7 +20,7 @@ export default struct ReceiptItemComponent {
       Text("¥")
         .fontColor($r("app.color.primary"))
         .margin({left: 16})
-      Text(this.bill.money.toString())
+      Text(Math.abs(this.bill.money).toString())
         .fontColor($r("app.color.primary"))
       Blank()
       Text(this.bill.shopkeeper.substring(0, Math.min(this.bill.shopkeeper.length, 7)))
@@ -32,6 +36,9 @@ export default struct ReceiptItemComponent {
     .padding({left: 8, right: 8})
     .width("100%")
     .height(68)
+    .onClick(() => {
+      router.pushUrl({url: "pages/ReceiptInfoPage"})
+    })
   }
 
 }

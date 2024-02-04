@@ -24,6 +24,7 @@ export default struct ReceiptComponent {
           ForEach(this.bills, (bill: Bill, index: number) => {
             ListItem() {
               ReceiptItemComponent({ bill: bill })
+                .margin({left: 12, right: 12})
             }
           }, item => item.billId)
         }
@@ -38,7 +39,7 @@ export default struct ReceiptComponent {
       .onRefreshing(() => {
         this.getAllBills()
       })
-      .width('90%')
+      .width('100%')
       .height('100%')
     }
     .width('100%')

@@ -12,6 +12,10 @@ class LabelUtil {
     return this.labelList
   }
 
+  public getLabelNameList(): string[] {
+    return this.labelList.map(label => label.labelName)
+  }
+
   public getLabelNameFormId(labelId: number): string {
     let res = ""
     this.labelList.forEach(label => {
@@ -22,14 +26,13 @@ class LabelUtil {
     return res
   }
 
-  public getLabelIdFromName(labelName: string): number {
-    let res = -1
+  public getLabelIdFromName(labelName: string): number | null {
+    let res = null
     this.labelList.forEach(label => {
       if (label.labelName === labelName) {
         res = label.labelId
       }
     });
-    if (res === -1) throw Error("标签名不存在")
     return res
   }
 

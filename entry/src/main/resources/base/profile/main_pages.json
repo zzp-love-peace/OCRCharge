@@ -3,6 +3,8 @@
     "pages/MainPage",
     "pages/LoginPage",
     "pages/RegisterPage",
-    "pages/LabelPage"
+    "pages/LabelPage",
+    "pages/ReceiptInfoPage",
+    "pages/SearchPage"
   ]
 }
