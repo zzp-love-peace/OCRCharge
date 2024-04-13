@@ -5,7 +5,16 @@ import ReceiptTabComponent from '../view/ReceiptTabComponent';
 @Entry
 @Component
 struct MainPage {
-  @State currentPage: number = 1;
+  @State currentPage: number = 1
+  @State pageVisible: boolean = false
+
+  onPageShow() {
+    this.pageVisible = true
+  }
+
+  onPageHide() {
+    this.pageVisible = false
+  }
 
   build() {
     Tabs({ barPosition: BarPosition.End, index: 1 }) {
@@ -17,7 +26,7 @@ struct MainPage {
       .tabBar(this.TabBuilder(TabId.CHAT))
 
       TabContent() {
-        ReceiptTabComponent()
+        ReceiptTabComponent({ pageVisible: $pageVisible })
       }
       .tabBar(this.TabBuilder(TabId.RECEIPT))
 

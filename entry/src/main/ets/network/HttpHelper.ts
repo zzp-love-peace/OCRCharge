@@ -31,7 +31,7 @@ interface HttpHelperStruct<R> {
 }
 
 export class HttpHelper {
-  private static BASE_URL: string = 'http://192.168.0.100:9988/'
+  private static BASE_URL: string = 'http://192.168.129.141:9988/'
 
   private static instance: HttpHelper = new HttpHelper()
 

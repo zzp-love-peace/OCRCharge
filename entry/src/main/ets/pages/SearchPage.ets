@@ -1,7 +1,10 @@
+import router from '@ohos.router'
+import { ReceiptHandleType, ReceiptItemPageType } from '../model/ReceiptModel'
 import { Bill } from '../model/ResponseModel'
 import { HttpHelper } from '../network/HttpHelper'
 import LabelUtil from '../utils/LabelUtil'
 import ReceiptItemComponent from '../view/ReceiptItemComponent'
+import ReceiptTabComponent from '../view/ReceiptTabComponent'
 import ToolBarComponent from '../view/ToolBarComponent'
 
 @Entry
@@ -14,6 +17,37 @@ struct SearchPage {
   private tagSelectIndex: number = 0
   private selectedDate: Date = new Date(Date.now())
   private pageNum: number = 1
+
+  onPageShow() {
+    try {
+      let handleType = (router.getParams() as Record<string, ReceiptHandleType | null>)['handleType']
+      let data = (router.getParams() as Record<string, Bill | null>)['data']
+      let newPageChangeCount: number = (router.getParams() as Record<string, number | null>)['pageChangeCount']
+      if (handleType !== null && data !== null && newPageChangeCount !== null && ReceiptTabComponent.pageChangeCount < newPageChangeCount) {
+        ReceiptTabComponent.pageChangeCount = newPageChangeCount
+        switch (handleType) {
+          case ReceiptHandleType.TYPE_ADD:
+            this.bills.unshift(data)
+            let newBills = []
+            newBills = newBills.concat(this.bills)
+            this.bills = newBills
+            break
+          case ReceiptHandleType.TYPE_REMOVE:
+            this.bills = this.bills.filter(bill => bill.billId !== data.billId)
+            break
+          case ReceiptHandleType.TYPE_UPDATE:
+            this.bills = this.bills.map(bill => {
+              if (bill.billId === data.billId) {
+                return data
+              }
+              return bill
+            })
+            break
+        }
+      }
+    } catch (e) {
+    }
+  }
 
   build() {
     Column() {
@@ -44,6 +78,7 @@ struct SearchPage {
             },
           })
         })
+
         Blank()
         Row() {
           Image($r("app.media.ic_tag"))
@@ -72,14 +107,18 @@ struct SearchPage {
       }
       .padding({ left: 22, right: 22, top: 5, bottom: 5 })
       .width("100%")
+
       Refresh({ refreshing: $$this.isRefreshing }) {
-        List({ space: 8}) {
-          ForEach(this.bills, (bill: Bill) => {
+        List({ space: 8 }) {
+          ForEach(this.bills, (bill: Bill, index: number) => {
             ListItem() {
-              ReceiptItemComponent({ bill: bill })
-                .margin({left: 12, right: 12})
+              ReceiptItemComponent({
+                bill: bill,
+                receiptItemPageType: ReceiptItemPageType.TYPE_SEARCH,
+              })
+                .margin({ left: 12, right: 12 })
             }
-          }, item => item.billId)
+          }, item => JSON.stringify(item))
         }
         .listDirection(Axis.Vertical)
         .edgeEffect(EdgeEffect.Spring)

@@ -1,5 +1,6 @@
+import { ReceiptType } from '../model/ReceiptModel'
 import { Bill } from '../model/ResponseModel'
-import { ReceiptType } from '../view/ReceiptComponent'
+
 class BillUtil {
 
   public getBillType(bill: Bill): ReceiptType {
