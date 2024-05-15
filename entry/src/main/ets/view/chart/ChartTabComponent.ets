@@ -1,16 +1,14 @@
-import router from '@ohos.router';
-import { ReceiptType } from '../model/ReceiptModel';
-import ReceiptComponent from './ReceiptComponent';
-import ToolBarComponent from './ToolBarComponent';
+import { BarChartType } from '../../model/ChartModel'
+import ChartInfoComponent, { PieChartBean } from './ChartInfoComponent'
 
 @Component
-export default struct ReceiptTabComponent {
+export default struct ChartTabComponent {
   @State currentIndex: number = 0
-  @Link @Watch('onPageVisibilityChange') pageVisible: boolean
-  public static pageChangeCount: number = 0
-
-  onPageVisibilityChange() {
-  }
+  @Link expensePieData: PieChartBean[]
+  @Link incomePieData: PieChartBean[]
+  @Link barChartType: BarChartType
+  @Link expenseBarData: number[]
+  @Link incomeBarData: number[]
 
   @Builder TabBuilder(index: number, name: string) {
     Column() {
@@ -30,23 +28,14 @@ export default struct ReceiptTabComponent {
 
   build() {
     Column() {
-      ToolBarComponent({ title: "账单", icons: [{ icon: $r("app.media.ic_search"), onClick: () => {
-        router.pushUrl({ url: "pages/SearchPage" })
-      } },
-        { icon: $r("app.media.ic_edit"), onClick: () => {
-          router.pushUrl({
-            url: "pages/ReceiptInfoPage",
-            params: { bill: null, backRouterName: "pages/MainPage", pageChangeCount: ReceiptTabComponent.pageChangeCount }
-          })
-        } }] })
       Tabs({ barPosition: BarPosition.Start }) {
         TabContent() {
-          ReceiptComponent({ receiptType: ReceiptType.TYPE_EXPENSE, pageVisible: $pageVisible })
+          ChartInfoComponent({ pieData: $expensePieData, barChartType: $barChartType, barData: $expenseBarData })
         }
         .tabBar(this.TabBuilder(0, '支出'))
 
         TabContent() {
-          ReceiptComponent({ receiptType: ReceiptType.TYPE_INCOME, pageVisible: $pageVisible })
+          ChartInfoComponent({ pieData: $incomePieData, barChartType: $barChartType, barData: $incomeBarData })
         }
         .tabBar(this.TabBuilder(1, '收入'))
       }

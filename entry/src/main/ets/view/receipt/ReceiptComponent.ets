@@ -1,7 +1,7 @@
 import router from '@ohos.router'
-import { ReceiptHandleType, ReceiptItemPageType, ReceiptType } from '../model/ReceiptModel'
-import { Bill } from '../model/ResponseModel'
-import { HttpHelper } from '../network/HttpHelper'
+import { ReceiptHandleType, ReceiptItemPageType, ReceiptType } from '../../model/ReceiptModel'
+import { Bill } from '../../model/ResponseModel'
+import { HttpHelper } from '../../network/HttpHelper'
 import ReceiptItemComponent from './ReceiptItemComponent'
 import ReceiptTabComponent from './ReceiptTabComponent'
 
@@ -23,7 +23,8 @@ export default struct ReceiptComponent {
         let handleType: ReceiptHandleType | null = (router.getParams() as Record<string, ReceiptHandleType | null>)['handleType']
         let data: Bill | null = (router.getParams() as Record<string, Bill | null>)['data']
         let newPageChangeCount: number = (router.getParams() as Record<string, number | null>)['pageChangeCount']
-        if (handleType !== null && data !== null && newPageChangeCount !== null && ReceiptTabComponent.pageChangeCount < newPageChangeCount) {
+        if (handleType !== null && data !== null && newPageChangeCount !== null
+        && ReceiptTabComponent.pageChangeCount < newPageChangeCount && this.isCorrectMoneyInList(data.money)) {
           ReceiptTabComponent.pageChangeCount = newPageChangeCount
           switch (handleType) {
             case ReceiptHandleType.TYPE_ADD:
@@ -80,6 +81,11 @@ export default struct ReceiptComponent {
     }
     .width('100%')
     .height('100%')
+  }
+
+  private isCorrectMoneyInList(money: number) {
+    return this.receiptType === ReceiptType.TYPE_EXPENSE && money > 0
+    || this.receiptType === ReceiptType.TYPE_INCOME && money < 0
   }
 
   private getAllBills() {

@@ -3,7 +3,7 @@ import LabelInputDialog from '../dialog/LabelInputDialog'
 import { Label } from '../model/ResponseModel'
 import { HttpHelper } from '../network/HttpHelper'
 import LabelUtil from '../utils/LabelUtil'
-import ToolBarComponent from '../view/ToolBarComponent'
+import ToolBarComponent from '../view/common/ToolBarComponent'
 
 @Entry
 @Component

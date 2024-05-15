@@ -38,8 +38,16 @@ export default struct MineComponent {
         .color($r("app.color.gray"))
       Text("统计")
         .margin({top: 20, left: 32})
-      this.NavigationItem($r("app.media.ic_chart_year"), "年度报表", () => {})
-      this.NavigationItem($r("app.media.ic_chart_month"), "月度报表", () => {})
+      this.NavigationItem($r("app.media.ic_chart_year"), "年度报表", () => {
+        router.pushUrl({
+          url: 'pages/YearChartPage'
+        }, router.RouterMode.Single)
+      })
+      this.NavigationItem($r("app.media.ic_chart_month"), "月度报表", () => {
+        router.pushUrl({
+          url: 'pages/MonthChartPage'
+        }, router.RouterMode.Single)
+      })
     }
     .alignItems(HorizontalAlign.Start)
     .backgroundColor($r("app.color.grayBackground"))

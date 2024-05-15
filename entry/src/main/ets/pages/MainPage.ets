@@ -1,6 +1,7 @@
 import { NavList, TabId } from '../model/NavItemModel';
+import ChartComponent from '../view/chart/ChartComponent';
 import MineComponent from '../view/MineComponent';
-import ReceiptTabComponent from '../view/ReceiptTabComponent';
+import ReceiptTabComponent from '../view/receipt/ReceiptTabComponent';
 
 @Entry
 @Component
@@ -19,9 +20,7 @@ struct MainPage {
   build() {
     Tabs({ barPosition: BarPosition.End, index: 1 }) {
       TabContent() {
-        Column() {
-          Text('图表')
-        }
+        ChartComponent()
       }
       .tabBar(this.TabBuilder(TabId.CHAT))
 

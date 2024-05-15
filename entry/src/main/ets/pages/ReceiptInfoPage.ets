@@ -3,8 +3,8 @@ import promptAction from '@ohos.promptAction'
 import { Bill } from '../model/ResponseModel'
 import { HttpHelper } from '../network/HttpHelper'
 import LabelUtil from '../utils/LabelUtil'
-import ToolBarComponent, { ToolBarIcon } from '../view/ToolBarComponent'
-import TypeRadioComponent from '../view/TypeRadioComponent'
+import ToolBarComponent, { ToolBarIcon } from '../view/common/ToolBarComponent'
+import TypeRadioComponent from '../view/receipt/TypeRadioComponent'
 import StringUtil from '../utils/StringUtil'
 import { ReceiptHandleType } from '../model/ReceiptModel'
 import { MediaHelper } from '../media/MediaHelper'
@@ -255,7 +255,7 @@ struct ReceiptInfoPage {
   private showUpdateDialog() {
     AlertDialog.show(
       {
-        title: '修改账单', // 标题
+        title: '提示', // 标题
         message: '是否需要修改该账单?', // 内容
         autoCancel: false, // 点击遮障层时，是否关闭弹窗。
         alignment: DialogAlignment.Center, // 弹窗在竖直方向的对齐方式
@@ -294,7 +294,7 @@ struct ReceiptInfoPage {
   private showDeleteDialog() {
     AlertDialog.show(
       {
-        title: '删除账单',
+        title: '提示',
         message: '是否需要删除该账单?',
         autoCancel: false,
         alignment: DialogAlignment.Center,
@@ -322,11 +322,12 @@ struct ReceiptInfoPage {
       if (!StringUtil.isContentEmpty(this.labelName)) {
         if (!StringUtil.isContentEmpty(this.shopkeeper)) {
           if (StringUtil.isNumber(this.money)) {
+            let moneyInNumber = Math.abs(Number.parseFloat(this.money))
             this.addBill({
               billId: 0,
               labelId: LabelUtil.getLabelIdFromName(this.labelName),
               userId: 0,
-              money: Math.abs(Number.parseFloat(this.money)),
+              money: this.isIncome ? -moneyInNumber : moneyInNumber,
               remark: this.remark,
               time: this.date,
               shopkeeper: this.shopkeeper

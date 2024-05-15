@@ -7,7 +7,7 @@ type OnPrepare = () => void
 
 type OnRequestSuccess = () => void
 
-type OnDataSuccess<R = any> = (data: R, msg: string) => void
+export type OnDataSuccess<R = any> = (data: R, msg: string) => void
 
 type OnDataFail = (code: number, msg: string) => void
 
@@ -31,7 +31,7 @@ interface HttpHelperStruct<R> {
 }
 
 export class HttpHelper {
-  private static BASE_URL: string = 'http://192.168.129.141:9988/'
+  private static BASE_URL: string = 'http://192.168.153.141:9988/'
 
   private static instance: HttpHelper = new HttpHelper()
 
@@ -145,13 +145,14 @@ export class HttpHelper {
       if (res.data.code == HttpResponseCode.success) {
         if (onDataSuccess) {
           onDataSuccess(res.data.data, res.data.msg)
+          Logger.debug(res.config.url, `onDataSuccess=>{code:${res.data.code}, data:${JSON.stringify(res.data.data)},msg:${res.data.msg}}`)
         }
       } else {
         if (onDataFail) {
           onDataFail(res.data.code, res.data.msg)
         } else {
           promptAction.showToast({ message: res.data.msg })
-          Logger.error(res.config.url, `onDataFail=>{code:${res.data.code}, data:${res.data.data},msg:${res.data.msg}}`)
+          Logger.error(res.config.url, `onDataFail=>{code:${res.data.code}, data:${JSON.stringify(res.data.data)},msg:${res.data.msg}}`)
         }
       }
     } else {

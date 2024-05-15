@@ -1,8 +1,8 @@
 import router from '@ohos.router'
-import { ReceiptItemPageType } from '../model/ReceiptModel'
-import { Bill } from '../model/ResponseModel'
-import BillUtil from '../utils/BillUtil'
-import LabelUtil from '../utils/LabelUtil'
+import { ReceiptItemPageType } from '../../model/ReceiptModel'
+import { Bill } from '../../model/ResponseModel'
+import BillUtil from '../../utils/BillUtil'
+import LabelUtil from '../../utils/LabelUtil'
 import ReceiptTabComponent from './ReceiptTabComponent'
 
 @Component

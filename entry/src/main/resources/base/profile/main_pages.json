@@ -5,6 +5,8 @@
     "pages/RegisterPage",
     "pages/LabelPage",
     "pages/ReceiptInfoPage",
-    "pages/SearchPage"
+    "pages/SearchPage",
+    "pages/MonthChartPage",
+    "pages/YearChartPage"
   ]
 }

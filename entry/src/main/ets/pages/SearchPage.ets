@@ -3,9 +3,9 @@ import { ReceiptHandleType, ReceiptItemPageType } from '../model/ReceiptModel'
 import { Bill } from '../model/ResponseModel'
 import { HttpHelper } from '../network/HttpHelper'
 import LabelUtil from '../utils/LabelUtil'
-import ReceiptItemComponent from '../view/ReceiptItemComponent'
-import ReceiptTabComponent from '../view/ReceiptTabComponent'
-import ToolBarComponent from '../view/ToolBarComponent'
+import ReceiptItemComponent from '../view/receipt/ReceiptItemComponent'
+import ReceiptTabComponent from '../view/receipt/ReceiptTabComponent'
+import ToolBarComponent from '../view/common/ToolBarComponent'
 
 @Entry
 @Component
