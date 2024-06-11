@@ -122,6 +122,7 @@ export default struct ChartComponent {
             this.barChartType = BarChartType.TYPE_WEEK
             this.getWeekExpenseData()
             this.getWeekIncomeData()
+            this.title = "最近一周"
           }
         },
       }

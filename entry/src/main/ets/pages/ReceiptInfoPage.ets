@@ -9,6 +9,10 @@ import StringUtil from '../utils/StringUtil'
 import { ReceiptHandleType } from '../model/ReceiptModel'
 import { MediaHelper } from '../media/MediaHelper'
 import SelectorBottomSheetDialog from '../dialog/SelectorBottomSheetDialog'
+import common from '@ohos.app.ability.common'
+import Logger from '../utils/Logger'
+import TextInUtil from '../utils/TextInUtil'
+import LoadingDialog from '../dialog/LoadingDialog'
 
 const DEFAULT_LABEL_NAME: string = "点击选择标签"
 const CANCEL_STRING: string = '取消'
@@ -44,12 +48,21 @@ struct ReceiptInfoPage {
       sheets: [
         {
           content: "拍照",
-          action: () => {
+          action: async () => {
+            this.mediaHelper.takePhoto(getContext(this) as common.UIAbilityContext)
           }
         },
         {
           content: "从相册中选择图片",
-          action: () => {
+          action: async () => {
+            let resMediaBean = await this.mediaHelper.selectPicture()
+            this.loadingController.open()
+            let billCropRes = await TextInUtil.billsCrop(resMediaBean)
+            this.loadingController.close()
+            this.money = billCropRes.billPrice
+            this.date = billCropRes.billTime
+            this.labelName = billCropRes.billType
+            this.shopkeeper = billCropRes.billShopkeeper
           }
         }
       ]
@@ -57,6 +70,15 @@ struct ReceiptInfoPage {
     autoCancel: true,
     alignment: DialogAlignment.Bottom,
     offset: { dx: 0, dy: -10 }
+  })
+
+  private loadingController: CustomDialogController = new CustomDialogController({
+    builder: LoadingDialog({
+      message: "智能识别中..."
+    }),
+    autoCancel: true,
+    alignment: DialogAlignment.Center,
+    customStyle: false
   })
 
   aboutToAppear() {
@@ -77,12 +99,13 @@ struct ReceiptInfoPage {
 
   aboutToDisappear() {
     this.dialogController = undefined
+    this.loadingController = undefined
   }
 
   build() {
     Column() {
       ToolBarComponent({
-        title: "账单详情",
+        title: this.isEditPage ? "账单详情" : "添加账单",
         backIcon: true,
         icons: this.isEditPage ? [this.imageIcon, this.deleteIcon] : [this.imageIcon, this.addIcon]
       })
@@ -347,7 +370,7 @@ struct ReceiptInfoPage {
   }
 
   private addBill(bill: Bill) {
-    HttpHelper.getInstance().put({ url: "/bill/add", data: bill, onDataSuccess: (data, msg) => {
+    HttpHelper.getInstance().put({ url: "bill/add", data: bill, onDataSuccess: (data, msg) => {
       promptAction.showToast({ message: msg })
       this.pageChangeCount++
       router.back({

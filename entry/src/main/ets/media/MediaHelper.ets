@@ -63,7 +63,6 @@ export class MediaHelper {
         }).catch((err) => {
           return err;
         }).then(async (filePath) => {
-
           const mediaBean = await this.buildMediaBean(filePath);
           return mediaBean;
 
@@ -81,7 +80,10 @@ export class MediaHelper {
     let want = {
       'uri': '',
       'action': wantConstant.Action.ACTION_IMAGE_CAPTURE,
-      'parameters': {},
+      // 'parameters': {},
+      parameters: {
+        callBundleName: "com.zzp.ocrcharge"
+      }
     };
     return context.startAbilityForResult(want)
       .then((result) => {

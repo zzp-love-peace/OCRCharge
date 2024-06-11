@@ -6,6 +6,7 @@ import LabelUtil from '../utils/LabelUtil'
 import ReceiptItemComponent from '../view/receipt/ReceiptItemComponent'
 import ReceiptTabComponent from '../view/receipt/ReceiptTabComponent'
 import ToolBarComponent from '../view/common/ToolBarComponent'
+import NoneImageComponent from '../view/common/NoneImageComponent'
 
 @Entry
 @Component
@@ -107,31 +108,34 @@ struct SearchPage {
       }
       .padding({ left: 22, right: 22, top: 5, bottom: 5 })
       .width("100%")
-
-      Refresh({ refreshing: $$this.isRefreshing }) {
-        List({ space: 8 }) {
-          ForEach(this.bills, (bill: Bill, index: number) => {
-            ListItem() {
-              ReceiptItemComponent({
-                bill: bill,
-                receiptItemPageType: ReceiptItemPageType.TYPE_SEARCH,
-              })
-                .margin({ left: 12, right: 12 })
-            }
-          }, item => JSON.stringify(item))
+      if (this.bills.length > 0) {
+        Refresh({ refreshing: $$this.isRefreshing }) {
+          List({ space: 8 }) {
+            ForEach(this.bills, (bill: Bill, index: number) => {
+              ListItem() {
+                ReceiptItemComponent({
+                  bill: bill,
+                  receiptItemPageType: ReceiptItemPageType.TYPE_SEARCH,
+                })
+                  .margin({ left: 12, right: 12 })
+              }
+            }, item => JSON.stringify(item))
+          }
+          .listDirection(Axis.Vertical)
+          .edgeEffect(EdgeEffect.Spring)
+          .width('100%')
+          .onReachEnd(() => {
+            this.loadMoreBills()
+          })
         }
-        .listDirection(Axis.Vertical)
-        .edgeEffect(EdgeEffect.Spring)
-        .width('100%')
-        .onReachEnd(() => {
-          this.loadMoreBills()
+        .onRefreshing(() => {
+          this.getBillsByCondition()
         })
+        .width('100%')
+        .layoutWeight(1)
+      } else {
+        NoneImageComponent()
       }
-      .onRefreshing(() => {
-        this.getBillsByCondition()
-      })
-      .width('100%')
-      .layoutWeight(1)
     }
     .width("100%")
     .height("100%")

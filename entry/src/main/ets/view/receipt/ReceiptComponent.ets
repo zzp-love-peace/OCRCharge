@@ -60,8 +60,7 @@ export default struct ReceiptComponent {
               ReceiptItemComponent({
                 bill: bill,
                 receiptItemPageType: ReceiptItemPageType.TYPE_MAIN_TAB
-              })
-                .margin({ left: 12, right: 12 })
+              }).margin({ left: 12, right: 12 })
             }
           }, item => JSON.stringify(item))
         }

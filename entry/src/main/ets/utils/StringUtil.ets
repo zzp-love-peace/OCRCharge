@@ -93,6 +93,24 @@ class StringUtil {
     }
     return result
   }
+
+  public convertDateString(input: string): string {
+  // 使用正则表达式匹配并捕获年、月、日
+  const regex = /(\d{4})年(\d{2})月(\d{2})日/;
+  const match = input.match(regex);
+
+  if (match) {
+    // 解构匹配结果
+    const [, year, month, day] = match;
+    // 构建目标日期字符串
+    const newYear = "2022";
+    const formattedDate = `${newYear}-${month}-${day}`;
+
+    return formattedDate;
+  } else {
+    throw new Error("输入的日期格式不正确");
+  }
+}
 }
 
 export default new StringUtil()

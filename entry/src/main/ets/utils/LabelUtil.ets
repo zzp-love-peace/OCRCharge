@@ -1,7 +1,7 @@
 import { Label } from '../model/ResponseModel'
 import Logger from './Logger'
-class LabelUtil {
 
+class LabelUtil {
   private labelList: Label[]
 
   public initLabelList(labels: Label[]) {
@@ -20,7 +20,7 @@ class LabelUtil {
     let res = ""
     this.labelList.forEach(label => {
       if (label.labelId === labelId) {
-        res =  label.labelName
+        res = label.labelName
       }
     });
     return res
@@ -36,13 +36,18 @@ class LabelUtil {
     return res
   }
 
-  public isContainLabelName(labelName: string) : boolean {
+  public isContainLabelName(labelName: string): boolean {
+    let res = false
     this.labelList.forEach(label => {
       if (label.labelName === labelName) {
-        return true
+        res = true
       }
     });
-    return false
+    return res
+  }
+
+  public addNewLabel(labelId: number, labelName: string) {
+    this.labelList.push({ "userId": -1, "labelName": labelName, "labelId": labelId })
   }
 }
 

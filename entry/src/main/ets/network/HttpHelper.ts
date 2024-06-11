@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, HttpStatusCode } from '@ohos/axios'
+import axios, { AxiosResponse, AxiosStatic, HttpStatusCode } from '@ohos/axios'
 import promptAction from '@ohos.promptAction'
 import { HttpResponse, HttpResponseCode } from './HttpResonse'
 import Logger from '../utils/Logger'
@@ -31,13 +31,13 @@ interface HttpHelperStruct<R> {
 }
 
 export class HttpHelper {
-  private static BASE_URL: string = 'http://192.168.153.141:9988/'
+  private static BASE_URL: string = 'http://192.168.96.141:9988/'
 
   private static instance: HttpHelper = new HttpHelper()
 
   private constructor() {
     axios.defaults.baseURL = HttpHelper.BASE_URL
-    axios.defaults.timeout = 5000
+    axios.defaults.timeout = 100000
   }
 
   public static getInstance(): HttpHelper {
@@ -112,6 +112,10 @@ export class HttpHelper {
         httpHelperStruct.onFinish()
       }
     })
+  }
+
+  public getAxios(): AxiosStatic {
+    return axios
   }
 
   public delete<R = any>(httpHelperStruct: HttpHelperStruct<R>) {

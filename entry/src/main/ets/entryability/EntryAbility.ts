@@ -1,6 +1,7 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
+import abilityAccessCtrl from '@ohos.abilityAccessCtrl';
 import PreferencesUtil from '../utils/PreferencesUtil';
 
 export default class EntryAbility extends UIAbility {
@@ -16,6 +17,10 @@ export default class EntryAbility extends UIAbility {
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
     PreferencesUtil.initPreferences(this.context)
+    var AtManager = abilityAccessCtrl.createAtManager()
+    AtManager.requestPermissionsFromUser(this.context, ["ohos.permission.READ_MEDIA", "ohos.permission.WRITE_MEDIA"]).then((data) => {
+    }).catch((err) => {
+    })
     windowStage.loadContent('pages/LoginPage', (err, data) => {
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
